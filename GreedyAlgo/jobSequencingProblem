@@ -1,0 +1,26 @@
+vector<int> jobSequencing(vector<int> &deadline, vector<int> &profit) {
+        // code here
+        int maxProfit = 0;
+        int count = 0;
+        int maxDl = 0;
+        vector<pair<int,int>> jobs;
+        for(int i=0;i<profit.size();i++){
+            maxDl = max(deadline[i],maxDl);
+            jobs.push_back({profit[i],deadline[i]});
+        }
+        sort(jobs.begin(),jobs.end(),greater<pair<int,int>>());
+        vector<bool> slots(maxDl+1 , false);
+        for(int i=0;i<jobs.size(); i++){
+            int currDl = jobs[i].second;
+            int currProfit = jobs[i].first;
+            for(int j = currDl; j>0; j--){
+                if(!slots[j]){
+                    maxProfit+=currProfit;
+                    slots[j] = true;
+                    count++;
+                    break;
+                }
+            }
+        }
+        return {count , maxProfit};
+    }
