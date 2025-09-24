@@ -1,0 +1,16 @@
+int findSubarray(vector<int> &arr) {
+        // code here.
+        int count = 0;
+        unordered_map<int,int> sumFreq;     //sum , freq
+        sumFreq[0] = 1;
+        int currSum = 0;
+        for(int i=0;i<arr.size(); i++){
+            currSum+=arr[i];
+            if(sumFreq.count(currSum)){ // checks if this sum has come before
+                count+=sumFreq[currSum];
+            }
+            //incrementing the currSum freq
+            sumFreq[currSum]++;
+        }
+        return count;
+    }
