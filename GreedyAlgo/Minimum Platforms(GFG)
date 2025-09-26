@@ -1,0 +1,29 @@
+//approach
+// the most number of platforms needed at a given instance of time is the minimum number of platorms
+// we are gonna need inorder to accomodate every train at the station.
+
+
+//code
+int minPlatform(vector<int>& arr, vector<int>& dep) {
+        // code here
+        int n = arr.size();
+        int inUse = 0;  //current number of platform in use
+        int peak = 0;   //most number of platforms needed at a given moment
+        int i = 0;
+        int j = 0;
+        sort(arr.begin() , arr.end());
+        sort(dep.begin(), dep.end());
+        while(i<n && j<n){
+            if(arr[i]<=dep[j]){    //if arrival is before the next departure then we are gonna need 1 more platform
+                inUse++;
+                i++;
+            }else{   // else depatrue is before the next arrival then one platform has become free
+                inUse--;
+                j++;
+            }
+            
+            peak = max(peak , inUse);    // storing the most platforms at a given time
+        }
+        
+        return peak;
+    }
