@@ -1,0 +1,40 @@
+//approach
+1:group the trains based on their respective platforms
+2:now sort the each platform's trains on the basis on their departure time and then the problem becomes same as activity selection probelm
+
+int maxStop(int n, int m, vector<vector<int>> &trains) {
+        // code here
+        vector<vector<pair<int,int>>> list(m);
+        for(int i=0;i<n;i++){ // grouping the trains on the basis of their platforms
+            int arrival = trains[i][0];
+            int departure = trains[i][1];
+            int platform = trains[i][2];
+            
+            list[platform-1].push_back({arrival , departure});
+        }
+        
+        int totalStops  = 0; //now same as activity selection , one thing to note is that sorting should be done for the individual platoforms
+        
+        for(int i=0; i<m;i++){
+            if(list[i].empty()) continue; // no trains for this platform(important check)
+            
+            sort(list[i].begin(), list[i].end() , [](const pair<int,int> &a , const pair<int,int> &b){
+                return a.second<b.second;
+            });
+            //now same as activity selection
+            int currCount = 1;
+            int lastD = list[i][0].second;
+            
+            for(int j=1;j<list[i].size(); j++){
+                if(list[i][j].first>=lastD){
+                    currCount++;
+                    lastD = list[i][j].second;
+                }
+            }
+            
+            totalStops+=currCount;
+        }
+        
+        return totalStops;
+        
+    }
