@@ -1,0 +1,37 @@
+
+//Approach:
+//1: store the first  occurances of each char of the string in a vector
+//2: now find pair of small and big characters such that bigger character should come first in the string , if exists , swap every occurances of them 
+
+string chooseandswap(string str) {
+        // Code Here
+        int n = str.size();
+        vector<int> firstOcc(26,-1);
+        for(int i =0; i<n; i++){
+            if(firstOcc[str[i] - 'a'] == -1){
+                firstOcc[str[i] - 'a'] = i;
+            }
+        }
+        
+        char charA = 0;
+        char charB = 0;
+        for(int i=0;i<n;i++){
+            char currChar = str[i];
+            for(char temp = 'a'; temp<currChar; temp++){
+                if(firstOcc[currChar - 'a'] < firstOcc[temp-'a'] ){ // biggerChar should occur first in the string
+                    charA = temp;
+                    charB = currChar;
+                    goto perform_swap;
+                }
+            }
+        }
+        
+       perform_swap:
+            if(charA!=0){
+                for(int i=0;i<n;i++){
+                    if(str[i] == charA) str[i] = charB;
+                    else if(str[i] == charB) str[i] = charA;
+                }
+            }
+            return str;
+    }
