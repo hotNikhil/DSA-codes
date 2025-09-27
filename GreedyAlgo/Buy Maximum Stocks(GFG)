@@ -1,0 +1,28 @@
+//approach
+//1:make a pair of stock price and the day and then sort the vector
+//2: then buy the maximum number of the stocks by traversing the vector while checking the limit and the currbalance left
+
+
+
+//code
+int buyMaximumProducts(int n, int k, int price[]) {
+        // Write your code here
+        vector<pair<int,int>> list;
+        for(int i=0;i<n;i++){
+            list.push_back({price[i],i+1});
+        }
+        sort(list.begin(),list.end());
+        int count = 0;
+        int balance = k;
+        for(int i=0;i<n;i++){
+            if(balance<=0) break;
+            int currPrice = list[i].first;
+            int limit  = list[i].second;
+            int stocksAvail = balance/currPrice;
+            int stocksToBuy = min(limit , stocksAvail);
+            count+=stocksToBuy;
+            balance -=stocksToBuy*currPrice;
+        }
+        
+        return count;
+    }
