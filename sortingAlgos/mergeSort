@@ -1,0 +1,65 @@
+ void mergeSort(std::vector<int>& nums, int left, int right) {
+        // Base case: if the array has 0 or 1 elements, it's already sorted.
+        if (left >= right) {
+            return;
+        }
+
+        // Find the middle point to split the array
+        int mid = left + (right - left) / 2;
+
+        // Recursively sort the left and right halves
+        mergeSort(nums, left, mid);
+        mergeSort(nums, mid + 1, right);
+
+        // Merge the two sorted halves back together
+        merge(nums, left, mid, right);
+    }
+
+    // Handles the "conquer" part by merging two sorted subarrays
+    void merge(std::vector<int>& nums, int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        // Create temporary vectors for the left and right subarrays
+        std::vector<int> L(n1);
+        std::vector<int> R(n2);
+
+        // Copy data to the temporary subarrays
+        for (int i = 0; i < n1; ++i) {
+            L[i] = nums[left + i];
+        }
+        for (int j = 0; j < n2; ++j) {
+            R[j] = nums[mid + 1 + j];
+        }
+
+        // Merge the temp arrays back into the original array
+        int i = 0; // Initial index of first subarray
+        int j = 0; // Initial index of second subarray
+        int k = left; // Initial index of merged subarray
+
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                nums[k] = L[i];
+                i++;
+            } else {
+                nums[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Copy any remaining elements from the left subarray
+        while (i < n1) {
+            nums[k] = L[i];
+            i++;
+            k++;
+        }
+
+        // Copy any remaining elements from the right subarray
+        while (j < n2) {
+            nums[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+};
