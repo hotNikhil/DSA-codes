@@ -1,0 +1,53 @@
+//choose the most expensive cut avalaible
+
+int minCost(int n, int m, vector<int>& x, vector<int>& y) {
+        //  code here
+        int vSeg = 1;
+        int hSeg = 1;
+        int cuts = 0;
+        int minCost = 0;
+        sort(x.begin(),x.end(),[](int&a , int &b){
+           return a>b; 
+        });
+        sort(y.begin(), y.end(), [](int&a,int&b){
+           return a>b; 
+        });
+        
+        int i = 0;
+        int j = 0;
+        while(i<x.size() && j<y.size()){
+            if(cuts>=n*m) break;
+            if(x[i] >= y[j]){
+                int cost = x[i]*hSeg;
+                vSeg+=1;
+                minCost +=cost;
+                cuts=hSeg*vSeg;
+                i++;
+            }else{
+                int cost = y[j]*vSeg;
+                hSeg+=1;
+                minCost +=cost;
+                cuts=vSeg*hSeg;
+                j++;
+            }
+        }
+        if(cuts>=n*m) return minCost;
+        //check for remaiing indices
+        while(i<x.size()){
+            if(cuts>=n*m) return minCost;
+            minCost += x[i]*hSeg;
+            vSeg +=1;
+            cuts=hSeg*vSeg;
+            i++;
+        }
+        
+        while(j<y.size()){
+            if(cuts>=n*m) return minCost;
+            minCost += y[j]*vSeg;
+            hSeg +=1;
+            cuts=hSeg*vSeg;
+            j++;
+        }
+        
+        return minCost;
+    }
