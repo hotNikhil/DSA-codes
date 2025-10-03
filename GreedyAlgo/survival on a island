@@ -1,0 +1,43 @@
+// Problem statement
+Problem Statement: Survival on an Island
+
+Geekina is stranded on an island. There is only one shop that sells food, and it is closed every Sunday.
+
+You are given:
+
+N → the maximum units of food you can buy in a single day.
+
+S → the total number of days Geekina needs to survive.
+
+M → the number of units of food Geekina needs per day to survive.
+
+Currently, it is Monday. Geekina needs to plan her purchases so she can survive the next S days.
+
+Your task is to determine:
+
+The minimum number of days Geekina needs to buy food from the shop to survive, or
+
+Return -1 if survival is impossible.
+
+Constraints
+
+1 ≤ S, N, M ≤ 1000
+
+
+
+code:
+
+int minimumDays(int S, int N, int M) {
+        // code here
+        if(M>N) return -1;  //daily requirement is more than buying limit
+        
+        if(S>=7){
+            if(6*N<7*M) return -1;  //weekly requirment is more then weekly buyin limit given we cannot buy on sundays
+        }
+        
+        int totalFoodNeeded = S*M;
+        
+        int minDays = (totalFoodNeeded +N-1)/N; //ceil(a/b) = (a+b-1)/b;
+        
+        return minDays;
+    }
