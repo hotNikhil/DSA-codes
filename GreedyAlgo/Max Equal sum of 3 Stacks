@@ -1,0 +1,42 @@
+//Problem Statement
+Given three stacks S1, S2 & S3 of size N1, N2 & N3 respectively, having only Positive Integers. The task is to find the possible equal maximum sum of the stacks with the removal of top elements allowed. Stacks are represented as an array, and the first index of the array represents the top element of the stack.
+
+Example 1:
+
+Input:
+N1 = 3, N2 = 4, N3 = 2
+S1 = {4,2,3}
+S2 = {1,1,2,3}
+S3 = {1,4}
+Output:
+5
+Explanation:
+We can pop 1 element from the 1st stack, and 2
+elements from the 2nd stack. Now remaining elements
+
+
+code: 
+ int maxEqualSum(int N1, int N2, int N3, vector<int> &S1, vector<int> &S2,vector<int> &S3){
+       int sum1  = 0;
+       int sum2 = 0;
+       int sum3 = 0;
+       for(int el:S1) sum1+=el;
+       
+       for(int el:S2) sum2+=el;
+           
+       for(int el:S3) sum3+=el;
+       
+       int top1 = 0 , top2 =0 , top3 = 0;
+       
+       while(top1<N1 && top2<N2 && top3 <N3){
+           if(sum1 == sum2 && sum2 == sum3) return sum1;
+           
+           if(sum1 >= sum2 && sum1>=sum3) sum1 -= S1[top1++];
+          
+           else if(sum2 >= sum1 && sum2 >= sum3) sum2 -= S2[top2++];
+        
+           else if(sum3 >= sum1 && sum3 >= sum2) sum3 -= S3[top3++];
+       }
+       
+       return 0;
+    }
