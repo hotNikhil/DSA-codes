@@ -1,0 +1,46 @@
+//simply use binary search to find the first and last occurances of a element
+code:
+
+vector<int> find(vector<int>& arr, int x) {
+        // code here
+       int firstOccurance = firstOcc(arr,x);
+       int lastOccurance  = lastOcc(arr,x);
+       return {firstOccurance,lastOccurance};
+        
+    }
+    
+    int firstOcc(vector<int> &arr , int x){
+        int low = 0 , high  = arr.size()-1 , ans = -1;
+        
+        while(low<=high){
+            int mid = low + (high - low)/2;
+            if(arr[mid] == x){
+                ans = mid;
+                high  = mid -1; //change here , check for first occ before this curr mid index
+            }else if(arr[mid]>x){
+                high  = mid-1;
+            }else{
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
+    
+    int lastOcc(vector<int> &arr , int x){
+        int low = 0 , high = arr.size()-1, ans = -1;
+        
+        while(low<=high){
+            int mid = low + (high - low )/2;
+            if(arr[mid] == x){
+                ans = mid;
+                low = mid+1;   //change here , check for last occurance after curr mid index
+            }
+            else if(arr[mid]>x){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
