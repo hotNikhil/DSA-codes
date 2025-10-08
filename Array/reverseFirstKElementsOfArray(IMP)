@@ -1,0 +1,41 @@
+Rotate Array by K Positions
+
+Problem Statement:
+Given an integer array arr of size n and an integer k, rotate the array to the right by k positions.
+
+Input:
+
+arr → vector of integers
+
+k → number of positions to rotate
+
+Output:
+
+The array after rotating it to the right by k positions.
+
+Example 1:
+
+Input: arr = [1, 2, 3, 4, 5, 6, 7], k = 3
+Output: [5, 6, 7, 1, 2, 3, 4]
+
+
+
+code:
+
+void reverseKElements(vector<int> &arr, int k) {
+        // code here
+        int n = arr.size();
+        k = k % n; // normalise the k
+        
+        auto reversePart = [&](int start, int end){
+            while(start < end){
+                swap(arr[start], arr[end]);
+                start++;
+                end--;
+            }
+        };
+        
+        reversePart(0 , n-1); //reverse the whole array first
+        reversePart(0 , k-1); //reverse the first k element (0 to k-1)
+        reversePart(k , n-1);// reverse the rest of the array
+    }
