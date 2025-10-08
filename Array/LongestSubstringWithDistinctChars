@@ -1,0 +1,46 @@
+//statement:
+You are given a string s. You have to find the length of the longest substring with all distinct characters. 
+
+Examples:
+
+Input: s = "geeksforgeeks"
+Output: 7
+Explanation: "eksforg" is the longest substring with all distinct characters.
+Input: s = "aaa"
+Output: 1
+Explanation: "a" is the longest substring with all distinct characters.
+
+
+Approach:
+//Think of a window that contains only unique characters.
+Use two pointers: left (start of window) and right (end of window).
+Move the right pointer to expand the window one character at a time.
+Check for duplicates:
+Keep a map of characters and their last seen index.
+If the character at right is already inside the window (mp[ch] >= left), move the left pointer right after the previous occurrence of that character.
+Update the maximum length:
+Length of current window = right - left + 1
+Keep track of the largest length seen so far.
+Continue until the end of the string.
+
+
+code:
+int longestUniqueSubstr(string &s) {
+        // code here
+        int left = 0;
+        int maxLen = 0;
+        map<char,int> mp;
+        for(int right = 0; right<s.size(); right++){
+            char ch = s[right];
+            
+            if(mp.find(ch)!=mp.end() && mp[ch]>=left){
+                left = mp[ch] + 1;
+            }
+            
+            mp[ch] = right;
+            maxLen = max(maxLen , right - left +1);
+        }
+        
+        return maxLen;
+    }
+
