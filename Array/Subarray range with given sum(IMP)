@@ -1,0 +1,28 @@
+//Statement:
+Given an unsorted array of integers arr[], and a target tar, determine the number of subarrays whose elements sum up to the target value.
+(Including Negative Numbers)
+
+//Appraoch:
+use perefix sum approach and hashmap to store the frequency of each sum enocontered
+
+code:
+int subArraySum(vector<int>& arr, int tar) {
+        //  code here
+        map<int,int> mp;
+        int currSum = 0;
+        int count  = 0;
+        mp[0] = 1;
+        for(int i=0;i<arr.size();i++){
+            currSum+=arr[i];
+            
+            
+            if(mp.find(currSum-tar) != mp.end()){
+                count+=mp[currSum-tar]; // check if currSum is already present in the map,then add the number of freq to the currCount
+            }
+            
+            mp[currSum]++;
+            
+        }
+        
+        return count;
+    }
