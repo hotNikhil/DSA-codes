@@ -1,0 +1,43 @@
+//problem statement:
+//Given an array arr[] containing 2*n + 2 positive numbers, out of which 2*n numbers exist in pairs
+//whereas only two number occur exactly once and are distinct. Find the other two numbers. Return the answer in increasing order.
+
+
+//appraoch:
+
+
+XOR Sum: By XORing all elements in the array, all paired numbers cancel each other out, leaving us with the XOR sum of the two unique numbers (x ^ y).
+
+Partitioning: Since x and y are distinct, x ^ y is non-zero and must have at least one set bit. This set bit signifies a position where the binary 
+representations of x and y differ. We can use this bit as a criterion to partition the array into two groups.
+
+Isolation: One group will contain x along with other pairs, and the second group will contain y with the remaining pairs. XORing all elements within 
+each group isolates x and y, respectively.
+
+
+//code:
+
+ vector<int> singleNum(vector<int>& arr) {
+        // Code here.
+        int xorSum = 0;
+        for(int el:arr){
+            xorSum = xorSum^el;
+        }
+        
+        int partitionBit = xorSum & -xorSum;  //gives the right most set bit
+        
+        //what does this right most set bit means , it means that both the numbers are unique
+        
+        int uniqueNum1 = 0;
+        int uniqueNum2 = 0;
+        for(int el:arr){
+            if((el & partitionBit) != 0){
+                uniqueNum1 = uniqueNum1^el;
+            }else{
+                uniqueNum2 = uniqueNum2^el;
+            }
+        }
+        
+        if(uniqueNum1>uniqueNum2) return {uniqueNum2 , uniqueNum1};
+        else return {uniqueNum1 , uniqueNum2};
+    }
