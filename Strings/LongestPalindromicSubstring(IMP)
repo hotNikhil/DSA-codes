@@ -1,0 +1,62 @@
+//problem statement
+//Given a string s, return the longest palindromic substring in s. If there are multiple answers, return the one that appears first in the given string s.
+Note: Substring is a contiguous sequence of characters within a string, i.e. s[ i . . . . j ] where 0 ≤ i ≤ j < len(s).
+Examples :
+Input: s = "forgeeksskeegfor"
+Output: geeksskeeg
+Explanation: There are several possible palindromic substrings like "kssk", "ss", "eeksskee" etc. But the substring "geeksskeeg" is the longest among all.
+
+//Approach(Gemini)
+## Approach: Expand Around Center
+The core idea is that a palindrome is symmetric around its center. We can find the longest palindrome by considering every possible character
+and the space between characters as a potential center and expanding outwards.
+Logic:
+Iterate through each index i of the string from 0 to n−1.
+For each index, check for two cases:
+Odd-Length Palindrome: Treat the character s[i] as the center. Use two pointers, one starting at i and the other at i, and expand outwards.
+Even-Length Palindrome: Treat the space between s[i] and s[i+1] as the center. Use two pointers, one starting at i and the other at i+1, and expand outwards.
+During expansion, as long as the pointers are in bounds and the characters they point to are the same, you have a valid palindrome.
+Keep track of the starting index and the maximum length of the longest valid palindrome found so far.
+Complexity:
+Time Complexity: O(n2)
+Space Complexity: O(1)
+
+
+
+//CODE:
+
+string getLongestPal(string &s) {
+        // code here
+        int n = s.size();
+        if(n<2) return s;
+        int start = 0;
+        int maxLength = 1; // single char is always a plaindrome
+        
+        for(int i=0; i<n; i++){
+            //case 1 treat s[i] as the centre 
+            int low = i-1;
+            int high = i+1;
+            while(low>=0 && high < n && s[low]==s[high]){
+                if(high - low + 1> maxLength) {
+                    maxLength = high - low +1;
+                    start = low;
+                }
+                low--;
+                high++;
+            }
+            //case2 treat the currchar as the space
+            low = i;
+            high = i+1;
+            while(low>=0 && high<n && s[low] == s[high]){
+                if(high - low +1 > maxLength){
+                    maxLength  = high - low +1;
+                    start = low;
+                }
+                low--;
+                high++;
+            }
+        }
+        return s.substr(start , maxLength);
+    }
+
+
