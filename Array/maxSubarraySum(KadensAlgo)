@@ -1,0 +1,17 @@
+You are given an integer array arr[]. You need to find the maximum sum of a subarray (containing at least one element) in the array arr[].
+
+Note : A subarray is a continuous part of an array.
+
+
+code:
+
+int maxSubarraySum(vector<int> &arr) {
+        // Code here
+        int currSum = arr[0];
+        int maxSum = arr[0];
+        for(int i=1;i<arr.size(); i++){
+            currSum  = max(currSum+arr[i],arr[i]);  //check if to continue the previous subarray or to start a new one
+            maxSum = max(currSum , maxSum); //update the global maximum
+        }
+        return maxSum;
+    }
