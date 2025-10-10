@@ -1,0 +1,66 @@
+QuickSort follows a divide-and-conquer approach to sort an array. The three main steps are:
+
+Divide: An element from the array is chosen as a pivot. The array is then partitioned so that all elements smaller than the pivot are moved to its left,
+and all elements greater are moved to its right. After this step, the pivot is in its final sorted position.
+
+Conquer: The quickSort function is called recursively on the two sub-arrays formed by the partition (the one with smaller elements and the one with larger elements).
+
+Combine: No extra work is needed to combine the sub-arrays, as the sorting is done in-place.
+
+Implementation Details
+This specific implementation has the following characteristics:
+
+Partition Scheme: It uses the Lomuto partition scheme, which is a popular and intuitive method for partitioning the array.
+Pivot Selection: The last element of the array (or sub-array) is consistently chosen as the pivot.
+Data Structure: The code uses std::vector from the C++ Standard Library to handle the array dynamically.
+Swapping: A custom swapp utility function that works with pointers (int *a, int *b) is included to perform the in-place swapping of elements.
+
+
+code:
+#include<bits/stdc++.h>
+using namespace std;
+
+void swapp(int *a, int *b){
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int partition(vector<int> &arr , int low , int high){
+    int pivot = arr[high]; //choosing the last index as pivot element
+    int i = low-1;  //index of smaller element
+
+    for(int j=low; j<high; j++){
+        if(arr[j]<=pivot){
+            i++;
+            swap(arr[j] , arr[i]);
+        }
+    }
+
+    swapp(&arr[high], &arr[i+1]); //swap the pivot element with i+1th element in the array
+    return (i+1); //returing the idx of pivot element which is at its correct place
+}
+
+
+void quickSort(vector<int> &arr, int low , int high){
+    if(low<high){
+        int pi = partition(arr, low , high); //get the index of the correctly placed pivot element
+
+        quickSort(arr, low , pi-1); //recursively call for the left subarray
+        quickSort(arr , pi+1 , high); //recursivly call for the right subarray
+    }
+}
+//main function
+int main(){
+   vector<int> arr = {7, 2, 1, 6, 8, 5, 3, 4};
+    int n = arr.size();
+    int low = 0;
+    int high = n-1;
+
+    quickSort(arr,low,high);
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+
+    return 0;
+}
