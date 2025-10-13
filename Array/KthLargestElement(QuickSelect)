@@ -1,0 +1,80 @@
+//Approach:
+Of course. Your code uses a clever and efficient approach called Quickselect.
+Here's the simple breakdown of its strategy:
+
+## 1. The Main Trick: Flipping the Problem 🎯
+First, your code realizes that finding the k-th largest element is the same as finding the (n - k)-th smallest element.
+It calculates this target index (targetedIdx) in the main function before doing anything else.
+
+## 2. The "Divide" Step: Partitioning
+The lomutoPartition function is the workhorse. It picks a pivot element (the last one in the subarray) and shuffles the array around it.
+After partitioning, the pivot is guaranteed to be in the exact spot it would be if the array were fully sorted.
+
+## 3. The "Conquer" Step: Smart Searching 🗺️
+This is the key to the algorithm's speed. After the pivot is placed, your quickSelect function checks its index:
+If the pivot's index is the one we're looking for, we're done!
+If our target index is to the left of the pivot, the code completely ignores the right half of the array and only searches the left side.
+If our target is to the right, it ignores the left half and only searches the right side.
+By repeatedly partitioning and throwing away the half it doesn't need, the algorithm quickly closes in on the correct element without ever
+having to sort the whole array.
+
+
+code:
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void swapp(int *a , int *b){ //custom swap function to swap the elements from their original position
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+
+int lomutoPartition(vector<int> &arr , int low , int high){
+    int pivot = arr[high];
+    int i = low - 1; 
+
+    for(int j=low; j<high; j++){
+        if(arr[j] <= pivot){
+            i++;
+            swapp(&arr[j] , &arr[i]);
+        }
+    }
+
+    swapp(&arr[i+1] , &arr[high]);
+    return (i+1);
+}
+
+int quickSelect(vector<int> &arr , int low , int high , int targetedIdx){
+    if(low <= high){
+        int pi = lomutoPartition(arr , low , high);
+        if(pi == targetedIdx){
+            return arr[pi];
+        }
+        else if(pi > targetedIdx){ //check on the left side
+            return quickSelect(arr , low , pi-1 , targetedIdx);
+        }
+        else{ //check on the right side
+            return quickSelect(arr, pi+1 , high , targetedIdx);
+        }
+    }
+
+    return -1;
+}
+
+
+
+
+
+int main(){
+    vector<int> arr = {10, 20, 30, 40, 50};
+    int k  = 3;
+    int n = arr.size();
+    int targetedIdx = n - k;
+    int low = 0;
+    int high = n -1;
+    int ans = quickSelect(arr, low , high , targetedIdx);
+    cout<<ans<<endl;
+
+}
