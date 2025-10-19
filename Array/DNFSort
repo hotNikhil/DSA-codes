@@ -1,0 +1,28 @@
+void sort012(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        int low = 0;
+        int mid = 0;
+        int high = n-1;
+
+// between 0 to low-1 all zeros are stored
+// between low to mid-1 all 1s are stored
+// between mid to high - unprocessed numbers
+// after high = all 2s are stored
+        
+        while(mid<=high){
+            int curr = arr[mid];
+            if(curr == 0){
+                swap(arr[low] , arr[mid]);
+                low++;
+                mid++;
+            }
+            else if(curr == 1){
+                mid++;
+            }
+            else{
+                swap(arr[mid] , arr[high]);
+                high--;
+            }
+        }
+    }
