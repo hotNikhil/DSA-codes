@@ -1,0 +1,54 @@
+PROBLEM STATEMENT:
+Given two integer arrays arr1[] and arr2[] sorted in ascending order and an integer k, your task is to find k pairs with the smallest sums, such that one element of each pair belongs to arr1[] and the other belongs to arr2[].
+
+Return the list of these k pairs, where each pair is represented as [arr1[i], arr2[j]].
+
+Note: You can return any possible k pairs with the smallest sums, the driver code will print true if it is correct else it will print false.
+Examples:
+Input: arr1[] = [1, 7, 11], arr2[] = [2, 4, 6], k = 3
+Output: true
+Explanation: All possible combinations of elements from the two arrays are:
+[1, 2], [1, 4], [1, 6], [7, 2], [7, 4], [7, 6], [11, 2], [11, 4], [11, 6]. 
+Among these, the three pairs with the minimum sums are [1, 2], [1, 4], [1, 6].
+Input: arr1[] = [1, 3], arr2[] = [2, 4] k = 2
+Output: true
+Explanation: All possible combinations are [1, 2], [1, 4], [3, 2], [3, 4]. 
+Among these, the two pairs with the minimum sums are [1, 2], [3, 2].
+
+
+CODE:
+
+vector<vector<int>> kSmallestPair(vector<int> &arr1, vector<int> &arr2, int k) {
+        // code here
+        int n = arr1.size();  //get the size of arr1
+        int m = arr2.size();   // get the size of arr2
+        vector<vector<int>> ans;
+        if(n==0 || m==0 || k ==0) return ans;  //if any one is zero , return the empty ans vector
+        
+        //define a type alias for the priroty queue for clearner and better understanding
+        using p = pair<int,pair<int,int>>; // sum , i , j
+        
+        priority_queue<p , vector<p> , greater<p>> pq;   //creating a min heap
+        
+        for(int i=0; i<min(n, k); i++){   //make a pair of every element of arr1 with first element of arr2 to initilaise the pq
+            int sum = arr1[i] + arr2[0];
+            pq.push({sum, {i,0}});
+        }
+        
+        while(k>0 && !pq.empty()){   //while loop upto k >0 and pq not empty , if loop exits with pq becoming empty then we dont have k pairs to return , just return whatever you have
+            pair<int, pair<int, int>> top = pq.top();
+            pq.pop();
+            int i = top.second.first;
+            int j = top.second.second;
+            
+            ans.push_back({arr1[i],arr2[j]});  //push the valid pair into the ans vector
+            k--;  //as we have got out one more pair , reduce the number of k pairs
+            
+            if(j+1<m){ // now check if we pair curr ith element of arr1 with j+1th element
+                int sum = arr1[i] + arr2[j+1];
+                pq.push({sum , {i , j+1}}); //push sum , i , j+1 into the pq
+            }
+        }
+        
+        return ans;       // return the number of pairs
+    }
