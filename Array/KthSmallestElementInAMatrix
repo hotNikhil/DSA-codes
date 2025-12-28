@@ -1,0 +1,72 @@
+Problem: Given a matrix mat[][] of size n*n, where each row and column is sorted in non-decreasing order. 
+--Find the kth smallest element in the matrix.
+
+
+code:
+
+class Solution {
+public:
+    // Helper function: Counts how many numbers in the matrix are <= mid.
+    // Uses the "Staircase Method" to do this in O(N) time.
+    int helper(vector<vector<int>> &mat , int n , int mid){
+        int row = 0;
+        int col = n-1; // Start from the Top-Right corner
+        int count = 0;
+        
+        while(row < n && col >= 0){
+            if(mat[row][col] <= mid){
+                // Valid! Current element is <= mid.
+                // Since the row is sorted, every element to the LEFT (indices 0 to col)
+                // is ALSO <= mid. We count them all at once.
+                count += col + 1; 
+                
+                // We are done with this row (we counted everything possible).
+                // Move DOWN to see if the next row has numbers <= mid.
+                row++;   
+            }
+            else{
+                // Too Big! Current element is > mid.
+                // Since the column is sorted, every element BELOW is also > mid.
+                // We discard this column and move LEFT to find smaller numbers.
+                col--;  
+            }
+        }
+        
+        return count;
+    }
+    
+    int kthSmallest(vector<vector<int>> &mat, int k) {
+        int n = mat.size();
+        
+        // Step 1: Define the Search Space (Range of VALUES, not indices)
+        // The answer must be between the smallest (top-left) and largest (bottom-right) number.
+        int low = mat[0][0];
+        int high = mat[n-1][n-1];
+        int ans = low;
+        
+        // Step 2: Binary Search on the Answer
+        while(low <= high){
+            int mid = low + (high - low)/2; // This is our "Guess"
+            
+            // Step 3: Check our Guess
+            // "If I assume 'mid' is the limit, do I have at least 'k' numbers?"
+            if(helper(mat , n, mid) >= k){ 
+                // YES, we found at least k numbers <= mid.
+                // 'mid' is a valid candidate for the answer.
+                ans = mid;
+                
+                // But is it the *smallest* valid candidate?
+                // Let's try to find a smaller number that also works.
+                high = mid - 1; 
+            }
+            else{
+                // NO, we found fewer than k numbers.
+                // 'mid' is too small. We strictly need a bigger number.
+                low = mid + 1;
+            }
+        }
+        
+        // Step 4: Return the smallest value that satisfied the condition
+        return ans;
+    }
+};
